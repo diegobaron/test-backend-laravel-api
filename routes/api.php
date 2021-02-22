@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
@@ -23,8 +23,12 @@ Route::group(['middleware' => ['apiJwt']], function() {
     Route::get('/courses', [CourseController::class, 'index']);
     Route::get('/course/show/{id}', [CourseController::class, 'show']);
     Route::post('/course/create', [CourseController::class, 'store']);
+    Route::put('/course/update/{id}', [CourseController::class, 'update']);
+    Route::delete('/course/delete/{id}', [CourseController::class, 'destroy']);
 
     Route::get('/schools', [SchoolController::class, 'index']);
-    Route::post('/school/create', [SchoolController::class, 'store']);
     Route::get('/school/show/{id}', [SchoolController::class, 'show']);
+    Route::post('/school/create', [SchoolController::class, 'store']);
+    Route::put('/school/update/{id}', [SchoolController::class, 'update']);
+    Route::delete('/school/delete/{id}', [SchoolController::class, 'destroy']);
 });

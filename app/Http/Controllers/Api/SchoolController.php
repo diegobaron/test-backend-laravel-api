@@ -16,10 +16,11 @@ class SchoolController extends Controller
     public function index()
     {
         try {
-            return response()->json(School::paginate(10), 200);
+            $data = School::paginate(10);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
@@ -42,25 +43,27 @@ class SchoolController extends Controller
                     'errors' => $validator->errors()
                 ], 200);
             }
-            return response()->json($school->create($data), 200);
+            $data = $school->create($data);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         try {
-            return response()->json(School::with('courses')->find($id), 200);
+            $data = School::with('courses')->find($id);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
@@ -68,7 +71,7 @@ class SchoolController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -85,37 +88,37 @@ class SchoolController extends Controller
                 ], 200);
             }
             $school->where('id', $id)->update($data);
-            return response()->json(['message' => 'Success'], 200);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json(['message' => 'Success'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
             School::where('id', $id)->delete();
-            return response()->json(['message' => 'Success'], 200);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json(['message' => 'Success'], 200);
     }
 
     /**
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param \Exception $e
+     * @return \Illuminate\Http\Response
      */
-    protected function respondException(\Exception $e)
+    protected function respondException($exception)
     {
         return response()->json([
             'error' => true,
-            'exception' => $e->getMessage()
+            'exception' => $exception->getMessage()
         ], 500);
     }
 }

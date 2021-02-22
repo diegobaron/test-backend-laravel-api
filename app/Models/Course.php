@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+//use Illuminate\Validation\Rule;
 
 class Course extends Model
 {
@@ -18,6 +18,12 @@ class Course extends Model
         'school_id',
         'description',
         'start_date'
+    ];
+
+    protected $casts = [
+        'start_date' => 'date:Y-m-d',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public function school()

@@ -11,22 +11,23 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         try {
-            return response()->json(Course::with('school')->paginate(10), 200);
+            $data = Course::with('school')->paginate(10);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -44,25 +45,27 @@ class CourseController extends Controller
                     'errors' => $validator->errors()
                 ], 200);
             }
-            return response()->json($course->create($data), 200);
+            $data = $course->create($data);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         try {
-            return response()->json(Course::with('school')->find($id), 200);
+            $data = Course::with('school')->find($id);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json($data, 200);
     }
 
     /**
@@ -70,38 +73,56 @@ class CourseController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $data = $request->only([
+                'name',
+                'school_id',
+                'description',
+                'start_date'
+            ]);
+            $course = new Course();
+            $validator = $course->validator($data, 'update');
+            if($validator->fails()) {
+                return response()->json([
+                    'errors' => $validator->errors()
+                ], 200);
+            }
+            $course->where('id', $id)->update($data);
+        } catch(\Exception $e) {
+            return $this->respondException($e);
+        }
+        return response()->json(['message' => 'Success'], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
             Course::where('id', $id)->delete();
-            return response()->json(['message' => 'Success'], 200);
         } catch(\Exception $e) {
             return $this->respondException($e);
         }
+        return response()->json(['message' => 'Success'], 200);
     }
 
     /**
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param \Exception $e
+     * @return \Illuminate\Http\Response
      */
-    protected function respondException(\Exception $e)
+    protected function respondException($exception)
     {
         return response()->json([
             'error' => true,
-            'exception' => $e->getMessage()
+            'exception' => $exception->getMessage()
         ], 500);
     }
 }
