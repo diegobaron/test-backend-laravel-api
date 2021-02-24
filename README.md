@@ -9,7 +9,7 @@ Jwt
     
     GET: /courses
     GET: /course/show/{id}
-    POST: '/course/create
+    POST: /course/create
     PUT: /course/update/{id}
     DELETE: /course/delete/{id}
 
