@@ -1,3 +1,1 @@
-<p align="center">
-Api de cotação de cursos
-</p>
+API COM CADASTRO DE ESCOLAS E CURSOS E COTAÇÃO DE CURSOS
