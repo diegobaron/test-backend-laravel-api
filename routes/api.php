@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CourseQuotationController;
 use App\Http\Controllers\Api\SchoolController;
 
 /*
@@ -17,7 +18,8 @@ use App\Http\Controllers\Api\SchoolController;
 |
 */
 
-Route::post('auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::get('/quotation', [CourseQuotationController::class, 'quotation']);
 
 Route::group(['middleware' => ['apiJwt']], function() {
     Route::get('/courses', [CourseController::class, 'index']);
