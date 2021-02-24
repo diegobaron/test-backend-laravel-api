@@ -3,6 +3,9 @@ Api criada com framework laravel para cadastro de escolas e cursos e cotação d
 
 ## Autenticação
 Jwt
+Dados para autenticação:
+email: root@ally.com
+password: 123456
 
 ## Rotas gerais da api
     POST: /auth/login
