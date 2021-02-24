@@ -1,5 +1,8 @@
 ## Sobre a Api
-Api com cadastro de escolas e cursos e cotação de valores dos cursos
+Api criada com framework laravel para cadastro de escolas e cursos e cotação de valores dos cursos
+
+## Autenticação
+Jwt
 
 ## Rotas gerais da api
     POST: /auth/login
